@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentHomeBinding
 import com.dicoding.dicodingevent.ui.DetailActivity
@@ -17,8 +18,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: EventAdapter
-    private val homeViewModel: HomeViewModel by viewModels()
+    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var upcomingAdapter: EventAdapter
+    private lateinit var finishedAdapter: EventAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,41 +32,54 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.rvUpcomingEvent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        adapter = EventAdapter { event ->
+
+        // Inisialisasi ViewModel
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+        // Inisialisasi Adapter
+        upcomingAdapter = EventAdapter { event ->
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("event_id", event.id)
             }
             startActivity(intent)
         }
-        binding.rvUpcomingEvent.adapter = adapter
+        finishedAdapter = EventAdapter { event ->
+            val intent = Intent(context, DetailActivity::class.java).apply {
+                putExtra("event_id", event.id)
+            }
+            startActivity(intent)
+        }
 
+        // Setup RecyclerView
+        binding.rvUpcomingEvent.layoutManager = LinearLayoutManager(context)
+        binding.rvUpcomingEvent.adapter = upcomingAdapter
+
+        binding.rvFinishedEvent.layoutManager = LinearLayoutManager(context)
+        binding.rvFinishedEvent.adapter = finishedAdapter
+
+        // Fetch events
+        homeViewModel.fetchUpcomingEvents()
+        homeViewModel.fetchFinishedEvents()
+
+        // Observe LiveData
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
         homeViewModel.isUpcomingLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoadingUpcoming(isLoading)
         }
+
         homeViewModel.upcomingEvents.observe(viewLifecycleOwner) { events ->
-            val limitedEvents = events.take(5)
-            adapter.submitList(limitedEvents)
+            upcomingAdapter.submitList(events.take(5))
         }
-
-        binding.rvFinishedEvent.layoutManager = LinearLayoutManager(context)
-        adapter = EventAdapter { event ->
-            val intent = Intent(context, DetailActivity::class.java).apply {
-                putExtra("event_id", event.id)
-            }
-            startActivity(intent)
-        }
-        binding.rvFinishedEvent.adapter = adapter
-
-        homeViewModel.fetchUpcomingEvents()
-        homeViewModel.fetchFinishedEvents()
 
         homeViewModel.isFinishedLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoadingFinished(isLoading)
         }
+
         homeViewModel.finishedEvents.observe(viewLifecycleOwner) { events ->
-            val limitedEvents = events.take(5)
-            adapter.submitList(limitedEvents)
+            finishedAdapter.submitList(events.take(5))
         }
     }
 

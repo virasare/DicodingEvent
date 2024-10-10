@@ -11,6 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeViewModel : ViewModel() {
+
     private val _upcomingEvents = MutableLiveData<List<ListEventsItem>>()
     val upcomingEvents: LiveData<List<ListEventsItem>> = _upcomingEvents
 
@@ -25,12 +26,12 @@ class HomeViewModel : ViewModel() {
 
     fun fetchUpcomingEvents() {
         _isUpcomingLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(1)
+        val client = ApiConfig.getApiService().getEvents(1) // 1 untuk upcoming events
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 _isUpcomingLoading.value = false
                 if (response.isSuccessful) {
-                    _upcomingEvents.value = response.body()?.listEvents
+                    _upcomingEvents.value = response.body()?.listEvents?.take(5) ?: emptyList()
                 }
             }
 
@@ -42,12 +43,12 @@ class HomeViewModel : ViewModel() {
 
     fun fetchFinishedEvents() {
         _isFinishedLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(0)
+        val client = ApiConfig.getApiService().getEvents(0) // 0 untuk finished events
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 _isFinishedLoading.value = false
                 if (response.isSuccessful) {
-                    _finishedEvents.value = response.body()?.listEvents
+                    _finishedEvents.value = response.body()?.listEvents?.take(5) ?: emptyList()
                 }
             }
 
