@@ -32,10 +32,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Inisialisasi ViewModel
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
-        // Inisialisasi Adapter
         upcomingAdapter = EventAdapter { event ->
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("event_id", event.id)
@@ -49,18 +47,15 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        // Setup RecyclerView
         binding.rvUpcomingEvent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvUpcomingEvent.adapter = upcomingAdapter
 
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(context)
         binding.rvFinishedEvent.adapter = finishedAdapter
 
-        // Fetch events
         homeViewModel.fetchUpcomingEvents()
         homeViewModel.fetchFinishedEvents()
 
-        // Observe LiveData
         observeViewModel()
     }
 
