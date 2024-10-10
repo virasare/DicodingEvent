@@ -53,6 +53,7 @@ class DetailActivity: AppCompatActivity() {
         binding.includeEventDetail.tvOwnerName.text = eventDetail.ownerName
         binding.includeEventDetail.tvQuota.text = eventDetail.quota.toString()
         binding.includeEventDetail.tvBeginTime.text = eventDetail.beginTime
+        binding.includeEventDetail.tvEventSummary.text = eventDetail.summary
         binding.includeEventDetail.tvEventDescription.text = eventDetail.description
         Glide.with(this)
             .load(eventDetail.mediaCover)

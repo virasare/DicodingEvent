@@ -13,7 +13,9 @@
     <string name="event_description">Description</string>
     <string name="register">Register</string>
     <string name="owner_name">Owner Name</string>
-    <string name="quota">Quota</string>
+    <string name="tt_quota">Registrant</string>
+    <string name="quota">Quota Quantity</string>
+    <string name="tt_begin_time">Begin Time</string>
     <string name="begin_time">Begin Time</string>
     <string name="information">Information : </string>
 </resources>
