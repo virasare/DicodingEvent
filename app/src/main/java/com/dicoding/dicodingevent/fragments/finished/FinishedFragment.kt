@@ -45,13 +45,13 @@ class FinishedFragment : Fragment() {
         binding.rvFinishedEvent.adapter = adapter
 
         // Observe LiveData from ViewModel
-        finishedViewModel.events.observe(viewLifecycleOwner, Observer { events ->
+        finishedViewModel.events.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events)
-        })
+        }
 
-        finishedViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+        finishedViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
-        })
+        }
 
         // Fetch events from API
         finishedViewModel.fetchEvents()

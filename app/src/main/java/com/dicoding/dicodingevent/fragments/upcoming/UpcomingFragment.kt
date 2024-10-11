@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentUpcomingEventBinding
 import com.dicoding.dicodingevent.ui.DetailActivity
 import com.dicoding.dicodingevent.ui.EventAdapter
+import com.google.android.material.snackbar.Snackbar
 
 class UpcomingFragment : Fragment() {
 
@@ -44,14 +44,20 @@ class UpcomingFragment : Fragment() {
         }
         binding.rvUpcomingEvent.adapter = adapter
 
-        // Observe LiveData from ViewModel
-        upcomingViewModel.events.observe(viewLifecycleOwner, Observer { events ->
+        upcomingViewModel.events.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events)
-        })
+        }
 
-        upcomingViewModel.isLoading.observe(viewLifecycleOwner, Observer { isLoading ->
+        upcomingViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             showLoading(isLoading)
-        })
+        }
+
+        upcomingViewModel.snackbarText.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+//                upcomingViewModel.clearSnackbarText() // Reset snackbarText
+            }
+        }
 
         // Fetch events from API
         upcomingViewModel.fetchEvents()

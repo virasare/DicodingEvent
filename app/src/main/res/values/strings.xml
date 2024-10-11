@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_upcoming">Upcoming</string>
     <string name="title_finished">Finished</string>
-    <string name="dicoding_event">Dicoding Event</string>
+<!--    <string name="dicoding_event">Dicoding Event</string>-->
     <string name="upcoming_event">Upcoming Event</string>
     <string name="finished_event">Finished Event</string>
     <string name="subtitle_upcoming">Recommendation event for you</string>
@@ -18,4 +18,9 @@
     <string name="tt_begin_time">Begin Time</string>
     <string name="begin_time">Begin Time</string>
     <string name="information">Information : </string>
+    <string name="searchbar_hint">Masukan kata</string>
+    <string name="search">Search</string>
+    <string name="media_cover">Media Cover</string>
+    <string name="image_logo">Image Logo</string>
+
 </resources>

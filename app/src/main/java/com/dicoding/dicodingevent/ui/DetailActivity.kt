@@ -4,48 +4,48 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.dicoding.dicodingevent.data.response.DetailEventResponse
 import com.dicoding.dicodingevent.data.response.Event
-import com.dicoding.dicodingevent.data.retrofit.ApiConfig
 import com.dicoding.dicodingevent.databinding.ActivityDetailBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.google.android.material.snackbar.Snackbar
 
-class DetailActivity: AppCompatActivity() {
+class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
+    private val detailViewModel: DetailViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val eventId = intent.getIntExtra("event_id", -1)
-        fetchEventDetails(eventId)
-    }
-    private fun fetchEventDetails(eventId: Int) {
-        binding.progressBarDetail.visibility = View.VISIBLE
 
-        val apiService = ApiConfig.getApiService()
-        apiService.getDetailEvent(eventId.toString()).enqueue(object: Callback<DetailEventResponse> {
-            override fun onResponse(call: Call<DetailEventResponse>, response: Response<DetailEventResponse>) {
-                if (response.isSuccessful && response.body() != null) {
-                    val eventDetail = response.body()?.event
-                    if (eventDetail != null) {
-                        updateUI(eventDetail)
-                    }
-                }
-                binding.progressBarDetail.visibility = View.GONE
-            }
+        // Fetch event details
+        detailViewModel.fetchEventDetails(eventId)
 
-            override fun onFailure(call: Call<DetailEventResponse>, t: Throwable) {
-                binding.progressBarDetail.visibility = View.GONE
+        // Observe event details
+        detailViewModel.eventDetail.observe(this) { eventDetail ->
+            if (eventDetail != null) {
+                updateUI(eventDetail)
             }
-        })
+        }
+
+        // Observe loading status
+        detailViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBarDetail.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        // Observe error messages
+        detailViewModel.errorMessage.observe(this) { errorMessage ->
+            // You can show a Snackbar or Toast with the error message
+            if (errorMessage != null) {
+                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun updateUI(eventDetail: Event) {
