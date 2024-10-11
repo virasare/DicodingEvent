@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentHomeBinding
+import com.dicoding.dicodingevent.fragments.finished.FinishedAdapter
 import com.dicoding.dicodingevent.ui.DetailActivity
 import com.dicoding.dicodingevent.ui.EventAdapter
 
@@ -18,8 +19,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var upcomingAdapter: EventAdapter
-    private lateinit var finishedAdapter: EventAdapter
+    private lateinit var upcomingAdapter: HomeAdapter
+    private lateinit var finishedAdapter: FinishedAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,13 +35,13 @@ class HomeFragment : Fragment() {
 
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
-        upcomingAdapter = EventAdapter { event ->
+        upcomingAdapter = HomeAdapter { event ->
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("event_id", event.id)
             }
             startActivity(intent)
         }
-        finishedAdapter = EventAdapter { event ->
+        finishedAdapter = FinishedAdapter { event ->
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("event_id", event.id)
             }

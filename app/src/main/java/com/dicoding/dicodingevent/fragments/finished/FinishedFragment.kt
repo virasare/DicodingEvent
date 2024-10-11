@@ -17,7 +17,7 @@ class FinishedFragment : Fragment() {
     private var _binding: FragmentFinishedEventBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: EventAdapter
+    private lateinit var eventAdapter: FinishedAdapter
     private val finishedViewModel: FinishedViewModel by viewModels() // Ambil instance ViewModel
 
     override fun onCreateView(
@@ -33,17 +33,17 @@ class FinishedFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(context)
-        adapter = EventAdapter { event ->
+        eventAdapter = FinishedAdapter { event ->
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("event_id", event.id)
             }
             startActivity(intent)
         }
-        binding.rvFinishedEvent.adapter = adapter
+        binding.rvFinishedEvent.adapter = eventAdapter
 
 
         finishedViewModel.events.observe(viewLifecycleOwner) { events ->
-            adapter.submitList(events)
+            eventAdapter.submitList(events)
         }
 
         finishedViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
