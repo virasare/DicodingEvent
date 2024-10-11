@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentHomeBinding
 import com.dicoding.dicodingevent.fragments.finished.FinishedAdapter
 import com.dicoding.dicodingevent.ui.DetailActivity
-import com.dicoding.dicodingevent.ui.EventAdapter
 
 class HomeFragment : Fragment() {
 

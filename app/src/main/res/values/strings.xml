@@ -14,13 +14,10 @@
     <string name="register">Register</string>
     <string name="owner_name">Owner Name</string>
     <string name="tt_quota">Quota</string>
-    <string name="quota">Quota Quantity</string>
     <string name="quota_remaining">Quota Remainning</string>
     <string name="tt_begin_time">Begin Time</string>
     <string name="begin_time">Begin Time</string>
     <string name="information">Information : </string>
-    <string name="searchbar_hint">Masukan kata</string>
-    <string name="search">Search</string>
     <string name="media_cover">Media Cover</string>
     <string name="image_logo">Image Logo</string>
 
