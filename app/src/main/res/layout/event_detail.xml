@@ -65,8 +65,8 @@
 
         <TableRow>
             <TextView
-                android:id="@+id/tv_quota"
-                android:text="@string/quota"
+                android:id="@+id/tv_quota_remaining"
+                android:text="@string/quota_remaining"
                 android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

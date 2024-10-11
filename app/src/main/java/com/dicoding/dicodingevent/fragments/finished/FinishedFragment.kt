@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentFinishedEventBinding
 import com.dicoding.dicodingevent.ui.DetailActivity
@@ -33,10 +32,8 @@ class FinishedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup RecyclerView with adapter
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(context)
         adapter = EventAdapter { event ->
-            // Handle onClick event
             val intent = Intent(context, DetailActivity::class.java).apply {
                 putExtra("event_id", event.id)
             }
@@ -44,7 +41,7 @@ class FinishedFragment : Fragment() {
         }
         binding.rvFinishedEvent.adapter = adapter
 
-        // Observe LiveData from ViewModel
+
         finishedViewModel.events.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events)
         }
@@ -53,7 +50,6 @@ class FinishedFragment : Fragment() {
             showLoading(isLoading)
         }
 
-        // Fetch events from API
         finishedViewModel.fetchEvents()
     }
 

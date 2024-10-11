@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.data.response.Event
 import com.dicoding.dicodingevent.databinding.ActivityDetailBinding
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 class DetailActivity : AppCompatActivity() {
 
@@ -51,10 +53,20 @@ class DetailActivity : AppCompatActivity() {
     private fun updateUI(eventDetail: Event) {
         binding.includeEventDetail.tvEventName.text = eventDetail.name
         binding.includeEventDetail.tvOwnerName.text = eventDetail.ownerName
-        binding.includeEventDetail.tvQuota.text = eventDetail.quota.toString()
+        val remainingQuota = (eventDetail.quota ?: 0) - (eventDetail.registrants ?: 0)
+        binding.includeEventDetail.tvQuotaRemaining.text = String.format(
+            Locale.getDefault(),
+            "%d Peserta",
+            remainingQuota
+        )
         binding.includeEventDetail.tvBeginTime.text = eventDetail.beginTime
         binding.includeEventDetail.tvEventSummary.text = eventDetail.summary
-        binding.includeEventDetail.tvEventDescription.text = eventDetail.description
+        binding.includeEventDetail.tvEventDescription.text = eventDetail.description?.let {
+            HtmlCompat.fromHtml(
+                it,
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        }
         Glide.with(this)
             .load(eventDetail.mediaCover)
             .into(binding.imgEventPhoto)
