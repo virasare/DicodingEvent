@@ -27,5 +27,6 @@
     <string name="enable_theme">Enable theme</string>
     <string name="daily_reminder">Daily Reminder</string>
     <string name="enable_notification">Enable Notification</string>
+    <string name="favorite_event">Favorite Event</string>
 
 </resources>
