@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.setting
+package com.dicoding.dicodingevent.ui.fragments.favorite
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.dicoding.dicodingevent.R
 
-class SettingFragment : Fragment() {
+class FavoriteFragment : Fragment() {
 
     companion object {
-        fun newInstance() = SettingFragment()
+        fun newInstance() = FavoriteFragment()
     }
 
-    private val viewModel: SettingViewModel by viewModels()
+    private val viewModel: FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,6 @@ class SettingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_setting, container, false)
+        return inflater.inflate(R.layout.fragment_favorite, container, false)
     }
 }

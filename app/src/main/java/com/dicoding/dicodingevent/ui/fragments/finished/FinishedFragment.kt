@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.finished
+package com.dicoding.dicodingevent.ui.fragments.finished
 
 import android.content.Intent
 import android.os.Bundle

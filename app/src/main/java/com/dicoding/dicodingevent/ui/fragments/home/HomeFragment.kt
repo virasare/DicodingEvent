@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.home
+package com.dicoding.dicodingevent.ui.fragments.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentHomeBinding
-import com.dicoding.dicodingevent.fragments.finished.FinishedAdapter
+import com.dicoding.dicodingevent.ui.fragments.finished.FinishedAdapter
 import com.dicoding.dicodingevent.ui.DetailActivity
 
 class HomeFragment : Fragment() {
@@ -49,9 +49,11 @@ class HomeFragment : Fragment() {
 
         binding.rvUpcomingEvent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvUpcomingEvent.adapter = upcomingAdapter
+        binding.rvFinishedEvent.isNestedScrollingEnabled = true
 
         binding.rvFinishedEvent.layoutManager = LinearLayoutManager(context)
         binding.rvFinishedEvent.adapter = finishedAdapter
+        binding.rvFinishedEvent.isNestedScrollingEnabled = false
 
         homeViewModel.fetchUpcomingEvents()
         homeViewModel.fetchFinishedEvents()

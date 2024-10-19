@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.home
+package com.dicoding.dicodingevent.ui.fragments.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

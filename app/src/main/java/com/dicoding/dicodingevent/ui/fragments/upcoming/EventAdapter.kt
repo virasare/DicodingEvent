@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.ui
+package com.dicoding.dicodingevent.ui.fragments.upcoming
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

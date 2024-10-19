@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.upcoming
+package com.dicoding.dicodingevent.ui.fragments.upcoming
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentUpcomingEventBinding
 import com.dicoding.dicodingevent.ui.DetailActivity
-import com.dicoding.dicodingevent.ui.EventAdapter
 import com.google.android.material.snackbar.Snackbar
 
 class UpcomingFragment : Fragment() {

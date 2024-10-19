@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.favorite
+package com.dicoding.dicodingevent.ui.fragments.favorite
 
 import androidx.lifecycle.ViewModel
 

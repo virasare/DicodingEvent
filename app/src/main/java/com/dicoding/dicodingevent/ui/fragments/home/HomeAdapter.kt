@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.fragments.finished
+package com.dicoding.dicodingevent.ui.fragments.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,17 +7,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.data.response.ListEventsItem
-import com.dicoding.dicodingevent.databinding.ItemEventsFinishedHomeBinding
+import com.dicoding.dicodingevent.databinding.ItemEventsUpcomingHomeBinding
 
-class FinishedAdapter(private val onClick: (ListEventsItem) -> Unit) :
-    ListAdapter<ListEventsItem, FinishedAdapter.FinishedViewHolder>(DIFF_CALLBACK) {
+class HomeAdapter(private val onClick: (ListEventsItem) -> Unit) :
+    ListAdapter<ListEventsItem, HomeAdapter.HomeViewHolder>(DIFF_CALLBACK) {
 
-    class FinishedViewHolder(private val binding: ItemEventsFinishedHomeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HomeViewHolder(private val binding: ItemEventsUpcomingHomeBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: ListEventsItem, onClick: (ListEventsItem) -> Unit) {
             binding.tvEventName.text = event.name
             Glide.with(binding.root.context)
-                .load(event.mediaCover)
-                .into(binding.imgMediaCover)
+                .load(event.imageLogo)
+                .into(binding.imgEventPhoto)
 
             // Set onClickListener for item
             binding.root.setOnClickListener {
@@ -26,12 +26,12 @@ class FinishedAdapter(private val onClick: (ListEventsItem) -> Unit) :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinishedViewHolder {
-        val binding = ItemEventsFinishedHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FinishedViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
+        val binding = ItemEventsUpcomingHomeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return HomeViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: FinishedViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val event = getItem(position)
         holder.bind(event, onClick)
     }
