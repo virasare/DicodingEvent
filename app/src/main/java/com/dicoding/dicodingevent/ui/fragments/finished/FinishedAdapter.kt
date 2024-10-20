@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.dicodingevent.data.response.ListEventsItem
+import com.dicoding.dicodingevent.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.databinding.ItemEventsFinishedHomeBinding
 
 class FinishedAdapter(private val onClick: (ListEventsItem) -> Unit) :

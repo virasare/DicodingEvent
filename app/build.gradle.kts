@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.ui.desktop)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,8 +71,6 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     //theme
     implementation(libs.androidx.datastore.preferences)
-//    implementation(libs.androidx.lifecycle.viewmodel.ktx.v261)
-//    implementation(libs.androidx.lifecycle.livedata.ktx.v261)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 

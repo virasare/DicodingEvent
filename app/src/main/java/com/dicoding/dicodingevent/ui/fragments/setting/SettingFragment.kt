@@ -13,10 +13,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingFragment : Fragment() {
 
-//    companion object {
-//        fun newInstance() = SettingFragment()
-//    }
-
     private lateinit var settingViewModel: SettingViewModel
 
     override fun onCreateView(
@@ -33,7 +29,7 @@ class SettingFragment : Fragment() {
 
         // Use requireContext() to access application context
         val pref = SettingPreferences.getInstance(requireContext().dataStore)
-        settingViewModel = ViewModelProvider(this, ViewModelFactory(pref))[SettingViewModel::class.java]
+        settingViewModel = ViewModelProvider(this, SettingFactory(pref))[SettingViewModel::class.java]
 
         settingViewModel.getThemeSettings().observe(viewLifecycleOwner) { isDarkModeActive: Boolean ->
             if (isDarkModeActive) {

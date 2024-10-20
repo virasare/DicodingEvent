@@ -13,7 +13,7 @@ import com.dicoding.dicodingevent.R
 import com.dicoding.dicodingevent.databinding.ActivityMainBinding
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingPreferences
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingViewModel
-import com.dicoding.dicodingevent.ui.fragments.setting.ViewModelFactory
+import com.dicoding.dicodingevent.ui.fragments.setting.SettingFactory
 import com.dicoding.dicodingevent.ui.fragments.setting.dataStore
 
 class MainActivity : AppCompatActivity() {
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         val pref = SettingPreferences.getInstance(dataStore)
-        settingViewModel = ViewModelProvider(this, ViewModelFactory(pref))[SettingViewModel::class.java]
+        settingViewModel = ViewModelProvider(this, SettingFactory(pref))[SettingViewModel::class.java]
 
         settingViewModel.getThemeSettings().observe(this) { isDarkModeActive: Boolean ->
             if (isDarkModeActive) {

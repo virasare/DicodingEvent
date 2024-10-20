@@ -3,23 +3,31 @@ package com.dicoding.dicodingevent.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.dicodingevent.data.response.DetailEventResponse
-import com.dicoding.dicodingevent.data.response.Event
-import com.dicoding.dicodingevent.data.retrofit.ApiConfig
+import androidx.lifecycle.viewModelScope
+import com.dicoding.dicodingevent.data.local.FavoriteEventEntity
+import kotlinx.coroutines.launch
+import com.dicoding.dicodingevent.data.local.FavoriteEventRepository
+import com.dicoding.dicodingevent.data.remote.response.DetailEventResponse
+import com.dicoding.dicodingevent.data.remote.response.Event
+import com.dicoding.dicodingevent.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailViewModel : ViewModel() {
+
+class DetailViewModel(private val repository: FavoriteEventRepository) : ViewModel() {
 
     private val _eventDetail = MutableLiveData<Event?>()
-    val eventDetail: MutableLiveData<Event?> = _eventDetail
+    val eventDetail: LiveData<Event?> = _eventDetail
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val _errorMessage = MutableLiveData<String>()
     val errorMessage: LiveData<String> = _errorMessage
+
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> = _isFavorite
 
     fun fetchEventDetails(eventId: Int) {
         _isLoading.value = true
@@ -41,4 +49,33 @@ class DetailViewModel : ViewModel() {
             }
         })
     }
+
+    fun checkFavoriteStatus(eventId: String) {
+        repository.getFavoriteEventById(eventId).observeForever { favoriteEvent ->
+            _isFavorite.value = favoriteEvent != null
+        }
+    }
+
+    fun addToFavorite(event: Event) {
+        val favoriteEventEntity = FavoriteEventEntity(
+            id = event.id.toString(),
+            name = event.name,
+            imageLogo = event.mediaCover
+        )
+
+        viewModelScope.launch {
+            repository.insertEvent(favoriteEventEntity)
+            _isFavorite.value = true
+        }
+    }
+
+    fun deleteFromFavorite(eventId: String) {
+        val favoriteEventEntity = FavoriteEventEntity(id = eventId)
+
+        viewModelScope.launch {
+            repository.delete(favoriteEventEntity)
+            _isFavorite.value = false
+        }
+    }
+
 }
