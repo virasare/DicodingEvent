@@ -20,7 +20,6 @@ class EventAdapter(private val onClick: (ListEventsItem) -> Unit) :
                 .load(event.imageLogo)
                 .into(binding.imgEventPhoto)
 
-            // Set onClickListener for item
             binding.root.setOnClickListener {
                 onClick(event)
             }

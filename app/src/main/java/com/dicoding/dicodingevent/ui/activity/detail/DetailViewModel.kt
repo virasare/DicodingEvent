@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.ui
+package com.dicoding.dicodingevent.ui.activity.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -60,7 +60,7 @@ class DetailViewModel(private val repository: FavoriteEventRepository) : ViewMod
         val favoriteEventEntity = FavoriteEventEntity(
             id = event.id.toString(),
             name = event.name,
-            imageLogo = event.mediaCover
+            imageLogo = event.imageLogo
         )
 
         viewModelScope.launch {

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentFinishedEventBinding
-import com.dicoding.dicodingevent.ui.DetailActivity
+import com.dicoding.dicodingevent.ui.activity.detail.DetailActivity
 
 class FinishedFragment : Fragment() {
 

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentUpcomingEventBinding
-import com.dicoding.dicodingevent.ui.DetailActivity
+import com.dicoding.dicodingevent.ui.activity.detail.DetailActivity
 import com.google.android.material.snackbar.Snackbar
 
 class UpcomingFragment : Fragment() {
@@ -54,11 +54,8 @@ class UpcomingFragment : Fragment() {
         upcomingViewModel.snackbarText.observe(viewLifecycleOwner) { message ->
             message?.let {
                 Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-//                upcomingViewModel.clearSnackbarText() // Reset snackbarText
             }
         }
-
-        // Fetch events from API
         upcomingViewModel.fetchEvents()
     }
 

@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.ui
+package com.dicoding.dicodingevent.ui.activity.detail
 
 import android.content.Intent
 import android.net.Uri
@@ -33,10 +33,15 @@ class DetailActivity : AppCompatActivity() {
         val factory = DetailFactory(repository)
 
         detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
+//        val eventIdString = intent.getStringExtra("event_id") ?: "-1"
+//        val eventId = eventIdString.toInt()
+//        val eventId: String? = if (intent.hasExtra("eventId")) {
+//            intent.getStringExtra("eventId")  // Ambil eventId sebagai String
+//        } else {
+//            intent.getStringExtra("favoriteId")  // Jika dari favorit, ambil String langsung
+//        }
 
         val eventId = intent.getIntExtra("event_id", -1)
-
-        detailViewModel.fetchEventDetails(eventId)
 
         detailViewModel.eventDetail.observe(this) { eventDetail ->
             if (eventDetail != null) {
@@ -44,6 +49,8 @@ class DetailActivity : AppCompatActivity() {
                 currentEvent = eventDetail
             }
         }
+
+        detailViewModel.fetchEventDetails(eventId)
 
         detailViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBarDetail.visibility = if (isLoading) View.VISIBLE else View.GONE

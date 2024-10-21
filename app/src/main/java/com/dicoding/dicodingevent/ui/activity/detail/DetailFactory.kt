@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.ui
+package com.dicoding.dicodingevent.ui.activity.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

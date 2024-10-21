@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.dicodingevent.databinding.FragmentHomeBinding
 import com.dicoding.dicodingevent.ui.fragments.finished.FinishedAdapter
-import com.dicoding.dicodingevent.ui.DetailActivity
+import com.dicoding.dicodingevent.ui.activity.detail.DetailActivity
 
 class HomeFragment : Fragment() {
 

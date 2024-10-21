@@ -16,49 +16,6 @@ class EventRepository private constructor(
         return favoriteEventDao.getAllFavorite()
     }
 
-//    fun loadFinishedEvents(): LiveData<Result<List<ListEventsItem>>> = liveData {
-//        emit(Result.Loading)
-//        try {
-//            // Assuming getEvents(0) returns an EventResponse
-//            val response = apiService.getEvents(0) // Make sure getEvents returns EventResponse
-//            val events = response.li // Accessing the listEvents property
-//            emit(Result.Success(events)) // Emit the list directly
-//        } catch (e: Exception) {
-//            Log.e("EventRepository", "Error loading finished events", e)
-//            emit(Result.Error(e.message.toString()))
-//        }
-//    }
-
-//    fun loadUpcomingEvents(): LiveData<Result<List<ListEventsItem>>> = liveData {
-//        emit(Result.Loading)
-//        try {
-//            // Assuming getEvents(1) returns an EventResponse
-//            val response: EventResponse = apiService.getEvents(1) // Make sure getEvents returns EventResponse
-//            val events = response.listEvents // Accessing the listEvents property
-//            emit(Result.Success(events)) // Emit the list directly
-//        } catch (e: Exception) {
-//            Log.e("EventRepository", "Error loading upcoming events", e)
-//            emit(Result.Error(e.message.toString()))
-//        }
-//    }
-//
-//    fun detailEvent(id: Int): LiveData<Result<ListEventsItem>> = liveData { // Change to Int to match id type
-//        emit(Result.Loading)
-//        try {
-//            // Assuming getEvents(id) returns an EventResponse for a single event
-//            val response: EventResponse = apiService.getEvents(id) // Make sure getEvents returns EventResponse
-//            val event = response.listEvents.find { it.id == id } // Find the event by ID
-//            if (event != null) {
-//                emit(Result.Success(event))
-//            } else {
-//                emit(Result.Error("Event not found"))
-//            }
-//        } catch (e: Exception) {
-//            Log.e("EventRepository", "Error loading event details", e)
-//            emit(Result.Error(e.message.toString()))
-//        }
-//    }
-
     companion object {
         @Volatile
         private var instance: EventRepository? = null
