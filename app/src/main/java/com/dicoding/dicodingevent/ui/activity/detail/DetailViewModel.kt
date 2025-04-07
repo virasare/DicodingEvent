@@ -4,21 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.dicodingevent.core.data.local.FavoriteEventEntity
+import com.dicoding.dicodingevent.core.domain.model.Event
 import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
-import kotlinx.coroutines.launch
 import com.dicoding.dicodingevent.core.data.remote.response.DetailEventResponse
-import com.dicoding.dicodingevent.core.data.remote.response.Event
+import com.dicoding.dicodingevent.core.data.remote.response.Event as RemoteEvent
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class DetailViewModel(private val repository: FavoriteEventRepository) : ViewModel() {
 
-    private val _eventDetail = MutableLiveData<Event?>()
-    val eventDetail: LiveData<Event?> = _eventDetail
+    private val _eventDetail = MutableLiveData<RemoteEvent?>()
+    val eventDetail: LiveData<RemoteEvent?> = _eventDetail
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -37,7 +36,8 @@ class DetailViewModel(private val repository: FavoriteEventRepository) : ViewMod
             override fun onResponse(call: Call<DetailEventResponse>, response: Response<DetailEventResponse>) {
                 _isLoading.value = false
                 if (response.isSuccessful && response.body() != null) {
-                    _eventDetail.value = response.body()?.event
+                    val remoteEvent: RemoteEvent? = response.body()?.event
+                    _eventDetail.value = remoteEvent
                 } else {
                     _errorMessage.value = "Error: ${response.message()}"
                 }
@@ -51,31 +51,22 @@ class DetailViewModel(private val repository: FavoriteEventRepository) : ViewMod
     }
 
     fun checkFavoriteStatus(eventId: String) {
-        repository.getFavoriteEventById(eventId).observeForever { favoriteEvent ->
-            _isFavorite.value = favoriteEvent != null
+        repository.getFavoriteEventById(eventId).observeForever { entity ->
+            _isFavorite.value = entity != null
         }
     }
 
     fun addToFavorite(event: Event) {
-        val favoriteEventEntity = FavoriteEventEntity(
-            id = event.id.toString(),
-            name = event.name,
-            imageLogo = event.imageLogo
-        )
-
         viewModelScope.launch {
-            repository.insertEvent(favoriteEventEntity)
+            repository.insertEvent(event)
             _isFavorite.value = true
         }
     }
 
-    fun deleteFromFavorite(eventId: String) {
-        val favoriteEventEntity = FavoriteEventEntity(id = eventId)
-
+    fun deleteFromFavorite(event: Event) {
         viewModelScope.launch {
-            repository.delete(favoriteEventEntity)
+            repository.delete(event)
             _isFavorite.value = false
         }
     }
-
 }

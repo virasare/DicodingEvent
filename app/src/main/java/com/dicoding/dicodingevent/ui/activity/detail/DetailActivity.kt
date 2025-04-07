@@ -1,7 +1,7 @@
 package com.dicoding.dicodingevent.ui.activity.detail
 
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.R
 import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 import com.dicoding.dicodingevent.core.data.remote.response.Event
+import com.dicoding.dicodingevent.core.domain.model.Event as DomainEvent
+import com.dicoding.dicodingevent.core.utils.DataMapper
 import com.dicoding.dicodingevent.databinding.ActivityDetailBinding
 import com.google.android.material.snackbar.Snackbar
 import java.util.Locale
@@ -21,7 +23,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var detailViewModel: DetailViewModel
 
     private var isFavorite: Boolean = false
-    private lateinit var currentEvent: Event
+    private lateinit var currentEvent: DomainEvent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.eventDetail.observe(this) { eventDetail ->
             if (eventDetail != null) {
                 updateUI(eventDetail)
-                currentEvent = eventDetail
+                currentEvent = DataMapper.mapResponseToDomain(eventDetail)
             }
         }
 
@@ -69,13 +71,13 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.checkFavoriteStatus(eventId.toString())
 
         detailViewModel.isFavorite.observe(this) { isFav ->
-            isFavorite = isFav
+            isFavorite = isFav ?: false
             updateFabIcon(isFavorite)
         }
 
         binding.fabFav.setOnClickListener {
             if (isFavorite) {
-                detailViewModel.deleteFromFavorite(currentEvent.id.toString())
+                detailViewModel.deleteFromFavorite(currentEvent)
                 Snackbar.make(binding.root, "${currentEvent.name} dihapus dari favorit", Snackbar.LENGTH_SHORT).show()
             } else {
                 detailViewModel.addToFavorite(currentEvent)
@@ -95,7 +97,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun updateUI(eventDetail: Event) {
         binding.includeEventDetail.tvEventName.text = eventDetail.name
-        binding.includeEventDetail.tvOwnerName.text = eventDetail.ownerName
+        binding.includeEventDetail.tvOwnerName.text = eventDetail.ownerName ?: "-"
         val remainingQuota = (eventDetail.quota ?: 0) - (eventDetail.registrants ?: 0)
         binding.includeEventDetail.tvQuotaRemaining.text = String.format(
             Locale.getDefault(),
@@ -115,7 +117,7 @@ class DetailActivity : AppCompatActivity() {
             .into(binding.imgEventPhoto)
 
         binding.btnRegister.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(eventDetail.link))
+            val intent = Intent(Intent.ACTION_VIEW, eventDetail.link?.toUri())
             startActivity(intent)
         }
     }
