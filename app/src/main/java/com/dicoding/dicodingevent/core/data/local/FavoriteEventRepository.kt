@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.data.local
+package com.dicoding.dicodingevent.core.data.local
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData

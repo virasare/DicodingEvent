@@ -2,7 +2,7 @@ package com.dicoding.dicodingevent.ui.activity.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.dicodingevent.data.local.FavoriteEventRepository
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 
 @Suppress("UNCHECKED_CAST")
 class DetailFactory(private val repository: FavoriteEventRepository) : ViewModelProvider.Factory {

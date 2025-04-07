@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.data.local
+package com.dicoding.dicodingevent.core.data.local
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

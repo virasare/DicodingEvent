@@ -1,4 +1,4 @@
-package com.dicoding.dicodingevent.data.local
+package com.dicoding.dicodingevent.core.data.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

@@ -3,9 +3,9 @@ package com.dicoding.dicodingevent.ui.fragments.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.dicodingevent.data.remote.response.EventResponse
-import com.dicoding.dicodingevent.data.remote.response.ListEventsItem
-import com.dicoding.dicodingevent.data.remote.retrofit.ApiConfig
+import com.dicoding.dicodingevent.core.data.remote.response.EventResponse
+import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
+import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -3,8 +3,8 @@ package com.dicoding.dicodingevent.ui.fragments.favorite
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.dicodingevent.data.local.FavoriteEventEntity
-import com.dicoding.dicodingevent.data.local.FavoriteEventRepository
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventEntity
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 
 class FavoriteViewModel(private val eventRepository: FavoriteEventRepository) : ViewModel() {
 

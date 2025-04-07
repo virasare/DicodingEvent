@@ -3,8 +3,8 @@ package com.dicoding.dicodingevent.ui.fragments.favorite
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.dicodingevent.data.local.FavoriteEventRepository
-import com.dicoding.dicodingevent.di.Injection
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
+import com.dicoding.dicodingevent.core.di.Injection
 
 class FavoriteFactory private constructor(private val eventRepository: FavoriteEventRepository) : ViewModelProvider.NewInstanceFactory(){
     @Suppress("UNCHECKED_CAST")

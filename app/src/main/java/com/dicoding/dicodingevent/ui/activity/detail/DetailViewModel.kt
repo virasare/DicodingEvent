@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.dicodingevent.data.local.FavoriteEventEntity
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventEntity
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 import kotlinx.coroutines.launch
-import com.dicoding.dicodingevent.data.local.FavoriteEventRepository
-import com.dicoding.dicodingevent.data.remote.response.DetailEventResponse
-import com.dicoding.dicodingevent.data.remote.response.Event
-import com.dicoding.dicodingevent.data.remote.retrofit.ApiConfig
+import com.dicoding.dicodingevent.core.data.remote.response.DetailEventResponse
+import com.dicoding.dicodingevent.core.data.remote.response.Event
+import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

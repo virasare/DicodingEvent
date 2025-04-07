@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dicoding.dicodingevent.data.local.FavoriteEventEntity
+import com.dicoding.dicodingevent.core.data.local.FavoriteEventEntity
 import com.dicoding.dicodingevent.databinding.ItemFavoriteBinding
 
 class FavoriteAdapter (private val onClick: (FavoriteEventEntity) -> Unit): RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
