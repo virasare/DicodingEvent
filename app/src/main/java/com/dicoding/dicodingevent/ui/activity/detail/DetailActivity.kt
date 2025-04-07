@@ -15,8 +15,10 @@ import com.dicoding.dicodingevent.core.domain.model.Event as DomainEvent
 import com.dicoding.dicodingevent.core.utils.DataMapper
 import com.dicoding.dicodingevent.databinding.ActivityDetailBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding

@@ -9,11 +9,14 @@ import com.dicoding.dicodingevent.core.data.remote.response.DetailEventResponse
 import com.dicoding.dicodingevent.core.data.remote.response.Event as RemoteEvent
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
 import com.dicoding.dicodingevent.core.domain.usecase.EventUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
-class DetailViewModel(private val eventUseCase: EventUseCase) : ViewModel() {
+@HiltViewModel
+class DetailViewModel @Inject constructor(private val eventUseCase: EventUseCase) : ViewModel() {
 
     private val _eventDetail = MutableLiveData<RemoteEvent?>()
     val eventDetail: LiveData<RemoteEvent?> = _eventDetail

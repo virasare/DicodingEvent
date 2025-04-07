@@ -15,7 +15,9 @@ import com.dicoding.dicodingevent.ui.fragments.setting.SettingPreferences
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingViewModel
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingFactory
 import com.dicoding.dicodingevent.ui.fragments.setting.dataStore
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

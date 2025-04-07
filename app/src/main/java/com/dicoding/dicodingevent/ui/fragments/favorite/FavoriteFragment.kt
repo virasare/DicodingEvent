@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.dicoding.dicodingevent.R
 import com.dicoding.dicodingevent.databinding.FragmentFavoriteBinding
 import com.dicoding.dicodingevent.ui.activity.detail.DetailActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null

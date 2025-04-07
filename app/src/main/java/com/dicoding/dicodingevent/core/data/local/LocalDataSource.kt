@@ -2,8 +2,9 @@ package com.dicoding.dicodingevent.core.data.local
 
 import android.content.Context
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class LocalDataSource(private val favoriteEventDao: FavoriteEventDao) {
+class LocalDataSource @Inject constructor(private val favoriteEventDao: FavoriteEventDao) {
 
     fun getAllFavorite(): Flow<List<FavoriteEventEntity>> = favoriteEventDao.getAllFavorite()
 

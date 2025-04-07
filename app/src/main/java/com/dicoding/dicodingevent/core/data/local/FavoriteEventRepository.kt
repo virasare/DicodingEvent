@@ -10,8 +10,9 @@ import com.dicoding.dicodingevent.core.domain.repository.IEventRepository
 import com.dicoding.dicodingevent.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class FavoriteEventRepository(
+class FavoriteEventRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) : IEventRepository {

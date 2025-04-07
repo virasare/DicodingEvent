@@ -3,8 +3,9 @@ package com.dicoding.dicodingevent.core.domain.usecase
 import com.dicoding.dicodingevent.core.domain.model.Event
 import com.dicoding.dicodingevent.core.domain.repository.IEventRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class EventInteractor(private val repository: IEventRepository): EventUseCase {
+class EventInteractor @Inject constructor(private val repository: IEventRepository): EventUseCase {
     override fun getAllFavoriteEvent(): Flow<List<Event>> =
         repository.getAllFavoriteEvent()
 
