@@ -26,7 +26,7 @@ class HomeViewModel : ViewModel() {
 
     fun fetchUpcomingEvents() {
         _isUpcomingLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(1) // 1 untuk upcoming events
+        val client = ApiConfig.getApiService().getEvents(1)
         client.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 _isUpcomingLoading.value = false

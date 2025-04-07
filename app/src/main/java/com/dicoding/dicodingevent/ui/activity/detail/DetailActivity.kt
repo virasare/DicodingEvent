@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.R
 import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 import com.dicoding.dicodingevent.core.data.remote.response.Event
+import com.dicoding.dicodingevent.core.di.Injection
 import com.dicoding.dicodingevent.core.domain.model.Event as DomainEvent
 import com.dicoding.dicodingevent.core.utils.DataMapper
 import com.dicoding.dicodingevent.databinding.ActivityDetailBinding
@@ -31,17 +32,10 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repository = FavoriteEventRepository(application)
-        val factory = DetailFactory(repository)
+        val useCase = Injection.provideEventUseCase(this)
+        val factory = DetailFactory(useCase)
 
         detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
-//        val eventIdString = intent.getStringExtra("event_id") ?: "-1"
-//        val eventId = eventIdString.toInt()
-//        val eventId: String? = if (intent.hasExtra("eventId")) {
-//            intent.getStringExtra("eventId")  // Ambil eventId sebagai String
-//        } else {
-//            intent.getStringExtra("favoriteId")  // Jika dari favorit, ambil String langsung
-//        }
 
         val eventId = intent.getIntExtra("event_id", -1)
 

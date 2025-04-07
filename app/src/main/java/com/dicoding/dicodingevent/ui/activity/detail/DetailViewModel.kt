@@ -5,16 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dicoding.dicodingevent.core.domain.model.Event
-import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 import com.dicoding.dicodingevent.core.data.remote.response.DetailEventResponse
 import com.dicoding.dicodingevent.core.data.remote.response.Event as RemoteEvent
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
+import com.dicoding.dicodingevent.core.domain.usecase.EventUseCase
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DetailViewModel(private val repository: FavoriteEventRepository) : ViewModel() {
+class DetailViewModel(private val eventUseCase: EventUseCase) : ViewModel() {
 
     private val _eventDetail = MutableLiveData<RemoteEvent?>()
     val eventDetail: LiveData<RemoteEvent?> = _eventDetail
@@ -51,21 +51,21 @@ class DetailViewModel(private val repository: FavoriteEventRepository) : ViewMod
     }
 
     fun checkFavoriteStatus(eventId: String) {
-        repository.getFavoriteEventById(eventId).observeForever { entity ->
+        eventUseCase.getFavoriteEventById(eventId).observeForever { entity ->
             _isFavorite.value = entity != null
         }
     }
 
     fun addToFavorite(event: Event) {
         viewModelScope.launch {
-            repository.insertEvent(event)
+            eventUseCase.insertEvent(event)
             _isFavorite.value = true
         }
     }
 
     fun deleteFromFavorite(event: Event) {
         viewModelScope.launch {
-            repository.delete(event)
+            eventUseCase.delete(event)
             _isFavorite.value = false
         }
     }

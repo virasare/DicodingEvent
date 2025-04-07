@@ -7,9 +7,10 @@ import java.util.concurrent.Executors
 import android.content.Context
 import androidx.lifecycle.map
 import com.dicoding.dicodingevent.core.domain.model.Event
+import com.dicoding.dicodingevent.core.domain.repository.IEventRepository
 import com.dicoding.dicodingevent.core.utils.DataMapper
 
-class FavoriteEventRepository(context: Context) {
+class FavoriteEventRepository private constructor(context: Context): IEventRepository {
     private val favoriteEventDao: FavoriteEventDao
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -18,22 +19,22 @@ class FavoriteEventRepository(context: Context) {
         favoriteEventDao = db.favoriteEventDao()
     }
 
-    fun getAllFavoriteEvent(): LiveData<List<Event>> {
+    override fun getAllFavoriteEvent(): LiveData<List<Event>> {
         return favoriteEventDao.getAllFavorite()
             .map { DataMapper.mapEntitiesToDomain(it) }
     }
 
-    fun insertEvent(event: Event) {
+    override fun insertEvent(event: Event) {
         val entity = DataMapper.mapDomainToEntity(event)
         executorService.execute { favoriteEventDao.insertEvent(entity) }
     }
 
-    fun delete(event: Event) {
+    override fun delete(event: Event) {
         val entity = DataMapper.mapDomainToEntity(event)
         executorService.execute { favoriteEventDao.delete(entity) }
     }
 
-    fun getFavoriteEventById(id: String): LiveData<Event?> {
+    override fun getFavoriteEventById(id: String): LiveData<Event?> {
         return favoriteEventDao.getFavoriteEventById(id)
             .map { entity ->
                 entity?.let {
@@ -47,7 +48,6 @@ class FavoriteEventRepository(context: Context) {
         @Volatile
         private var instance: FavoriteEventRepository? = null
 
-        // Ensure this method only takes Application as a parameter
         fun getInstance(context: Context): FavoriteEventRepository =
             instance ?: synchronized(this) {
                 instance ?: FavoriteEventRepository(context)
