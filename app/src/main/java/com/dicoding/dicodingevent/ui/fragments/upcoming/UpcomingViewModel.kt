@@ -3,12 +3,10 @@ package com.dicoding.dicodingevent.ui.fragments.upcoming
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.dicodingevent.core.data.remote.response.EventResponse
+import androidx.lifecycle.viewModelScope
 import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 class UpcomingViewModel : ViewModel() {
 
@@ -23,25 +21,15 @@ class UpcomingViewModel : ViewModel() {
 
     fun fetchEvents() {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(1) // 1 for upcoming events
-        client.enqueue(object : Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
+        viewModelScope.launch {
+            try {
+                val response = ApiConfig.getApiService().getEvents(1) // 1 for upcoming events
+                _events.value = response.listEvents
+            } catch (e: Exception) {
+                _snackbarText.value = "Koneksi gagal: ${e.message}"
+            } finally {
                 _isLoading.value = false
-                if (response.isSuccessful) {
-                    _events.value = response.body()?.listEvents
-                }else{
-                    _snackbarText.value = "Gagal memuat data: ${response.message()}"
-                }
             }
-
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isLoading.value = false
-                _snackbarText.value = "Koneksi gagal: ${t.message}"
-            }
-        })
+        }
     }
-
-//    fun clearSnackbarText() {
-//        _snackbarText.value = null
-//    }
 }

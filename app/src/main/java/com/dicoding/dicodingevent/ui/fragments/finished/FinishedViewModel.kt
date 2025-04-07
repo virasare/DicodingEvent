@@ -3,12 +3,10 @@ package com.dicoding.dicodingevent.ui.fragments.finished
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dicoding.dicodingevent.core.data.remote.response.EventResponse
+import androidx.lifecycle.viewModelScope
 import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 
 class FinishedViewModel : ViewModel() {
@@ -21,18 +19,15 @@ class FinishedViewModel : ViewModel() {
 
     fun fetchEvents() {
         _isLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(0) // 1 for upcoming events
-        client.enqueue(object : Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    _events.value = response.body()?.listEvents
-                }
-            }
-
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
+        viewModelScope.launch {
+            try {
+                val response = ApiConfig.getApiService().getEvents(0)
+                _events.value = response.listEvents
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
                 _isLoading.value = false
             }
-        })
+        }
     }
 }

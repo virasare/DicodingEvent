@@ -1,10 +1,12 @@
 package com.dicoding.dicodingevent.ui.fragments.favorite
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.dicoding.dicodingevent.core.domain.model.Event
 import com.dicoding.dicodingevent.core.domain.usecase.EventUseCase
+import kotlinx.coroutines.launch
 
 class FavoriteViewModel(private val eventUseCase: EventUseCase) : ViewModel() {
 
@@ -21,9 +23,12 @@ class FavoriteViewModel(private val eventUseCase: EventUseCase) : ViewModel() {
     private fun loadFavoriteEvents() {
         _isLoading.value = true
 
-        eventUseCase.getAllFavoriteEvent().observeForever { events ->
-            _isLoading.value = false
-            _favoriteEvent.value = events
+        viewModelScope.launch {
+            eventUseCase.getAllFavoriteEvent()
+                .collect { events ->
+                    _isLoading.postValue(false)
+                    _favoriteEvent.postValue(events)
+                }
         }
     }
 }

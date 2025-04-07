@@ -1,56 +1,79 @@
 package com.dicoding.dicodingevent.core.data.local
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import android.content.Context
-import androidx.lifecycle.map
+import com.dicoding.dicodingevent.core.data.NetworkBoundResource
+import com.dicoding.dicodingevent.core.data.Resource
+import com.dicoding.dicodingevent.core.data.remote.ApiResponse
+import com.dicoding.dicodingevent.core.data.remote.RemoteDataSource
+import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.core.domain.model.Event
 import com.dicoding.dicodingevent.core.domain.repository.IEventRepository
 import com.dicoding.dicodingevent.core.utils.DataMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class FavoriteEventRepository private constructor(context: Context): IEventRepository {
-    private val favoriteEventDao: FavoriteEventDao
-    private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
+class FavoriteEventRepository(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource
+) : IEventRepository {
 
-    init {
-        val db = FavoriteEventDatabase.getDatabase(context)
-        favoriteEventDao = db.favoriteEventDao()
-    }
-
-    override fun getAllFavoriteEvent(): LiveData<List<Event>> {
-        return favoriteEventDao.getAllFavorite()
+    override fun getAllFavoriteEvent(): Flow<List<Event>> {
+        return localDataSource.getAllFavorite()
             .map { DataMapper.mapEntitiesToDomain(it) }
     }
 
-    override fun insertEvent(event: Event) {
-        val entity = DataMapper.mapDomainToEntity(event)
-        executorService.execute { favoriteEventDao.insertEvent(entity) }
+    override fun getFavoriteEventById(id: String): Flow<Event?> {
+        return localDataSource.getFavoriteById(id)
+            .map { entity -> entity?.let { DataMapper.mapEntityToDomain(it) } }
     }
 
-    override fun delete(event: Event) {
+    override suspend fun insertEvent(event: Event) {
         val entity = DataMapper.mapDomainToEntity(event)
-        executorService.execute { favoriteEventDao.delete(entity) }
+        localDataSource.insertFavorite(entity)
     }
 
-    override fun getFavoriteEventById(id: String): LiveData<Event?> {
-        return favoriteEventDao.getFavoriteEventById(id)
-            .map { entity ->
-                entity?.let {
-                    DataMapper.mapEntitiesToDomain(listOf(it)).firstOrNull()
+    override suspend fun delete(event: Event) {
+        val entity = DataMapper.mapDomainToEntity(event)
+        localDataSource.deleteFavorite(entity)
+    }
+
+    override fun getRemoteEvents(active: Int): Flow<Resource<List<Event>>> {
+        return object : NetworkBoundResource<List<Event>, List<ListEventsItem>>() {
+            override fun loadFromDB(): Flow<List<Event>> {
+                return localDataSource.getAllFavorite()
+                    .map { DataMapper.mapEntitiesToDomain(it) }
+            }
+
+            override fun shouldFetch(data: List<Event>?): Boolean {
+                return true
+            }
+
+            override suspend fun fetchFromNetwork(): Flow<List<ListEventsItem>> {
+                return remoteDataSource.getAllEvents(active).map {
+                    when (it) {
+                        is ApiResponse.Success -> it.data
+                        else -> emptyList()
+                    }
                 }
             }
+
+            override suspend fun saveCallResult(data: List<ListEventsItem>) {
+            }
+        }.asFlow()
     }
 
     companion object {
-        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: FavoriteEventRepository? = null
 
-        fun getInstance(context: Context): FavoriteEventRepository =
+        fun getInstance(
+            remoteDataSource: RemoteDataSource,
+            localDataSource: LocalDataSource
+        ): FavoriteEventRepository =
             instance ?: synchronized(this) {
-                instance ?: FavoriteEventRepository(context)
-            }.also { instance = it }
+                instance ?: FavoriteEventRepository(remoteDataSource, localDataSource)
+                    .also { instance = it }
+            }
     }
+
 }
+

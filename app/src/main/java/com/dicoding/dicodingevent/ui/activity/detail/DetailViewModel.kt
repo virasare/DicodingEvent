@@ -10,9 +10,8 @@ import com.dicoding.dicodingevent.core.data.remote.response.Event as RemoteEvent
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
 import com.dicoding.dicodingevent.core.domain.usecase.EventUseCase
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.HttpException
+import java.io.IOException
 
 class DetailViewModel(private val eventUseCase: EventUseCase) : ViewModel() {
 
@@ -29,30 +28,27 @@ class DetailViewModel(private val eventUseCase: EventUseCase) : ViewModel() {
     val isFavorite: LiveData<Boolean> = _isFavorite
 
     fun fetchEventDetails(eventId: Int) {
-        _isLoading.value = true
-
-        val apiService = ApiConfig.getApiService()
-        apiService.getDetailEvent(eventId.toString()).enqueue(object : Callback<DetailEventResponse> {
-            override fun onResponse(call: Call<DetailEventResponse>, response: Response<DetailEventResponse>) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val response: DetailEventResponse =
+                    ApiConfig.getApiService().getDetailEvent(eventId.toString())
+                _eventDetail.value = response.event
+            } catch (e: IOException) {
+                _errorMessage.value = "Network Error: ${e.message}"
+            } catch (e: HttpException) {
+                _errorMessage.value = "Server Error: ${e.message}"
+            } finally {
                 _isLoading.value = false
-                if (response.isSuccessful && response.body() != null) {
-                    val remoteEvent: RemoteEvent? = response.body()?.event
-                    _eventDetail.value = remoteEvent
-                } else {
-                    _errorMessage.value = "Error: ${response.message()}"
-                }
             }
-
-            override fun onFailure(call: Call<DetailEventResponse>, t: Throwable) {
-                _isLoading.value = false
-                _errorMessage.value = "Failure: ${t.message}"
-            }
-        })
+        }
     }
 
     fun checkFavoriteStatus(eventId: String) {
-        eventUseCase.getFavoriteEventById(eventId).observeForever { entity ->
-            _isFavorite.value = entity != null
+        viewModelScope.launch {
+            eventUseCase.getFavoriteEventById(eventId).collect { entity ->
+                _isFavorite.value = entity != null
+            }
         }
     }
 

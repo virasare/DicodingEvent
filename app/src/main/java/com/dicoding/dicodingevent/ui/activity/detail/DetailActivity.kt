@@ -9,7 +9,6 @@ import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.R
-import com.dicoding.dicodingevent.core.data.local.FavoriteEventRepository
 import com.dicoding.dicodingevent.core.data.remote.response.Event
 import com.dicoding.dicodingevent.core.di.Injection
 import com.dicoding.dicodingevent.core.domain.model.Event as DomainEvent

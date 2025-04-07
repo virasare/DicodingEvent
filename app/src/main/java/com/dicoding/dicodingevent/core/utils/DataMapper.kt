@@ -32,4 +32,13 @@ object DataMapper {
             isFavorite = false
         )
     }
+
+    fun mapEntityToDomain(entity: FavoriteEventEntity): Event =
+        Event(
+            id = entity.id,
+            name = entity.name ?: "",
+            imageLogo = entity.imageLogo ?: "",
+            isFavorite = true
+        )
+
 }

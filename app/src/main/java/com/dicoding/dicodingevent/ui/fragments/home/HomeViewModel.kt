@@ -3,12 +3,13 @@ package com.dicoding.dicodingevent.ui.fragments.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.dicoding.dicodingevent.core.data.remote.response.EventResponse
 import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 class HomeViewModel : ViewModel() {
 
@@ -25,36 +26,34 @@ class HomeViewModel : ViewModel() {
     val isFinishedLoading: LiveData<Boolean> = _isFinishedLoading
 
     fun fetchUpcomingEvents() {
-        _isUpcomingLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(1)
-        client.enqueue(object : Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
+        viewModelScope.launch {
+            _isUpcomingLoading.value = true
+            try {
+                val response: EventResponse = ApiConfig.getApiService().getEvents(1)
+                _upcomingEvents.value = response.listEvents.take(5)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: HttpException) {
+                e.printStackTrace()
+            } finally {
                 _isUpcomingLoading.value = false
-                if (response.isSuccessful) {
-                    _upcomingEvents.value = response.body()?.listEvents?.take(5) ?: emptyList()
-                }
             }
-
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isUpcomingLoading.value = false
-            }
-        })
+        }
     }
 
     fun fetchFinishedEvents() {
-        _isFinishedLoading.value = true
-        val client = ApiConfig.getApiService().getEvents(0) // 0 untuk finished events
-        client.enqueue(object : Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
+        viewModelScope.launch {
+            _isFinishedLoading.value = true
+            try {
+                val response: EventResponse = ApiConfig.getApiService().getEvents(0)
+                _finishedEvents.value = response.listEvents.take(5)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: HttpException) {
+                e.printStackTrace()
+            } finally {
                 _isFinishedLoading.value = false
-                if (response.isSuccessful) {
-                    _finishedEvents.value = response.body()?.listEvents?.take(5) ?: emptyList()
-                }
             }
-
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
-                _isFinishedLoading.value = false
-            }
-        })
+        }
     }
 }
