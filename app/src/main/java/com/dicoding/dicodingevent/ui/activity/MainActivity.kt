@@ -10,7 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.dicodingevent.R
-import com.dicoding.dicodingevent.databinding.ActivityMainBinding
+import com.dicoding.dicodingevent.core.databinding.ActivityMainBinding
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingPreferences
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingViewModel
 import com.dicoding.dicodingevent.ui.fragments.setting.SettingFactory

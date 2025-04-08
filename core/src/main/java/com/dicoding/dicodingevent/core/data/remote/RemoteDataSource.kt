@@ -1,8 +1,8 @@
 package com.dicoding.dicodingevent.core.data.remote
 
 import android.util.Log
-import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.core.data.remote.response.Event
+import com.dicoding.dicodingevent.core.data.remote.response.ListEventsItem
 import com.dicoding.dicodingevent.core.data.remote.retrofit.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

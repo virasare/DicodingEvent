@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
@@ -7,16 +7,11 @@ plugins {
 }
 
 android {
-
-    namespace = "com.dicoding.dicodingevent"
+    namespace = "com.dicoding.dicodingevent.core"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.dicoding.dicodingevent"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,9 +76,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
-    // Hilt
+//    hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-
-    implementation(project(":core"))
+    ksp(libs.hilt.android.compiler)
 }

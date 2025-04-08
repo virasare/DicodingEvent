@@ -1,8 +1,8 @@
 package com.dicoding.dicodingevent.core.data.remote.retrofit
 
+import com.dicoding.dicodingevent.core.data.remote.response.DetailEventResponse
 import com.dicoding.dicodingevent.core.data.remote.response.EventResponse
 import retrofit2.http.*
-import com.dicoding.dicodingevent.core.data.remote.response.DetailEventResponse
 
 interface ApiService {
 
