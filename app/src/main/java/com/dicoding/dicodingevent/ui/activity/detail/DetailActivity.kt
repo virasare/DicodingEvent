@@ -4,14 +4,13 @@ import android.content.Intent
 import androidx.core.net.toUri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.R
 import com.dicoding.dicodingevent.core.data.remote.response.Event
 import com.dicoding.dicodingevent.core.databinding.ActivityDetailBinding
-import com.dicoding.dicodingevent.core.di.Injection
 import com.dicoding.dicodingevent.core.domain.model.Event as DomainEvent
 import com.dicoding.dicodingevent.core.utils.DataMapper
 import com.google.android.material.snackbar.Snackbar
@@ -22,7 +21,7 @@ import java.util.Locale
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var detailViewModel: DetailViewModel
+    private val detailViewModel: DetailViewModel by viewModels()
 
     private var isFavorite: Boolean = false
     private lateinit var currentEvent: DomainEvent
@@ -32,11 +31,6 @@ class DetailActivity : AppCompatActivity() {
 
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val useCase = Injection.provideEventUseCase(this)
-        val factory = DetailFactory(useCase)
-
-        detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
         val eventId = intent.getIntExtra("event_id", -1)
 

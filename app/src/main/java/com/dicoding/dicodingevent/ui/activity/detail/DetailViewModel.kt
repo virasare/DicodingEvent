@@ -16,7 +16,8 @@ import retrofit2.HttpException
 import java.io.IOException
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(private val eventUseCase: EventUseCase) : ViewModel() {
+class DetailViewModel @Inject constructor(
+    private val eventUseCase: EventUseCase) : ViewModel() {
 
     private val _eventDetail = MutableLiveData<RemoteEvent?>()
     val eventDetail: LiveData<RemoteEvent?> = _eventDetail
